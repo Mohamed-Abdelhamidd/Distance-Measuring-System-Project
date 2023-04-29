@@ -1,0 +1,20 @@
+#include "ultrasonic.h"
+#include "lcd.h"
+#include <avr/io.h>
+
+int main ()
+{
+	SREG |= (1<<7);
+
+	LCD_init ();
+	ULTRASONIC_init();
+
+	for (;;)
+	{
+		LCD_displayString("Distance = ")
+		LCD_intgerToString(ULTRASONIC_readDistance());
+		LCD_displayString("cm");
+	}
+}
+
+

@@ -1,0 +1,19 @@
+#include "ultrasonic.h"
+#include "icu.h"
+#include "lcd.h"
+#include <avr/io.h>
+
+int main ()
+{
+	Icu_ConfigType ICU_configType = {F_CPU_8,RISING};
+
+	SREG |= (1<<7);
+
+
+	for (;;)
+	{
+
+	}
+}
+
+

@@ -1,0 +1,14 @@
+/*---------------------------------------------------------------------------------------
+ * File Name  : ultrasonic.c
+ * Description: Ultrasonic module source file
+ * Date 	  : 28/4/2023
+ * Author	  : Mohamed Abdelhamid sayed
+ *-------------------------------------------------------------------------------------*/
+
+#ifndef ULTRASONIC_H_
+#define ULTRASONIC_H_
+
+#include "std_types.h"
+
+
+#endif /* ULTRASONIC_H_ */

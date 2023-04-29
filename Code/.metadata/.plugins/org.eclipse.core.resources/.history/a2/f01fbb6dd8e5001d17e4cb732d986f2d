@@ -1,0 +1,58 @@
+/*---------------------------------------------------------------------------------------
+ * File Name  : ultrasonic.c
+ * Description: Ultrasonic module source file
+ * Date 	  : 28/4/2023
+ * Author	  : Mohamed Abdelhamid sayed
+ *-------------------------------------------------------------------------------------*/
+
+#include "ultrasonic.h"
+#include "gpio.h"
+#include "icu.h"
+#include "common_macros.h"
+#include <util/delay.h>
+
+uint8  g_count = 0;
+uint16 g_highTime = 0;
+
+void ULTRASONIC_init (void)
+{
+	Icu_ConfigType ICU_configType = {F_CPU_8,RISING};
+	Icu_init(&ICU_configType);
+	Icu_setCallBack(ULTRASONIC_edgeProcessing);
+	GPIO_setupPinDirection(PORTB_ID, PIN5_ID, PIN_OUTPUT);
+}
+
+void ULTRASONIC_Trigger (void)
+{
+	GPIO_writePin(PORTB_ID, PIN5_ID, LOGIC_HIGH);
+	_delay_us (10);
+	GPIO_writePin(PORTB_ID, PIN5_ID, LOGIC_LOW);
+}
+
+uint16 ULTRASONIC_readDistance (void)
+{
+	uint32 distance = 0;
+
+	ULTRASONIC_Trigger ();
+	distance = (17000.00 * g_highTime) / 1000000;
+
+	return distance;
+}
+
+void  ULTRASONIC_edgeProcessing (void)
+{
+	g_count++;
+
+	if(g_count == 1)
+	{
+		Icu_clearTimerValue();
+		Icu_setEdgeDetectionType(FALLING);
+	}
+	else if (g_count == 2)
+	{
+		g_highTime = Icu_getInputCaptureValue();
+		Icu_clearTimerValue();
+		Icu_setEdgeDetectionType(RISING);
+		g_count = 0;
+	}
+}
